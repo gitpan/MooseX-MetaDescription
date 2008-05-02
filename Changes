@@ -1,0 +1,5 @@
+Revision history for Perl extension MooseX::MetaDescription
+
+0.01 Friday, May 2, 2008
+    - extracted from Ernst project into it's 
+      own package, cause it is useful 
