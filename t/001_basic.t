@@ -12,10 +12,12 @@ BEGIN {
 
 {
     package Foo;
-    use metaclass 'MooseX::MetaDescription::Meta::Class';
+    use metaclass 'MooseX::MetaDescription::Meta::Class' => (
+        description => {
+            'Hello' => 'World'
+        }
+    );
     use Moose;
-    
-    __PACKAGE__->meta->description->{'Hello'} = 'World';
     
     has 'bar' => (
         metaclass   => 'MooseX::MetaDescription::Meta::Attribute',
@@ -43,6 +45,7 @@ BEGIN {
 # check the meta-desc
 
 my $foo_class = Foo->meta;
+isa_ok($foo_class, 'MooseX::MetaDescription::Meta::Class');
 isa_ok($foo_class->metadescription, 'MooseX::MetaDescription::Description');
 is($foo_class->metadescription->descriptor, $foo_class, '... got the circular ref');
 

@@ -12,7 +12,7 @@ BEGIN {
 
 {
     package Foo;
-    use Moose;
+    use Moose;  
     
     has 'bar' => (
         metaclass   => 'MooseX::MetaDescription::Meta::Attribute',

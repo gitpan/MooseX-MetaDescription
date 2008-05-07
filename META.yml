@@ -18,4 +18,4 @@ no_index:
 requires: 
   Moose: 0.4
 tests: t/*.t
-version: 0.01
+version: 0.02

@@ -1,7 +1,7 @@
 package MooseX::MetaDescription::Description;
 use Moose;
 
-our $VERSION   = '0.01';
+our $VERSION   = '0.02';
 our $AUTHORITY = 'cpan:STEVAN';
 
 has 'descriptor' => (
@@ -34,6 +34,10 @@ attribute it is describing.
 =item B<descriptor>
 
 The actual attribute that is being described.
+
+=item B<meta>
+
+The Moose metaclass.
 
 =back
 

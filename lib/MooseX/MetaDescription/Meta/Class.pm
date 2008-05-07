@@ -1,11 +1,26 @@
 package MooseX::MetaDescription::Meta::Class;
 use Moose;
 
-our $VERSION   = '0.01';
+our $VERSION   = '0.02';
 our $AUTHORITY = 'cpan:STEVAN';
 
 extends 'Moose::Meta::Class';
    with 'MooseX::MetaDescription::Meta::Trait';
+   
+has '+description' => (
+   default => sub {
+       my $self   = shift;
+       my @supers = $self->linearized_isa;
+       shift @supers;
+       my %desc;
+       foreach my $super (@supers) {
+            if ($super->meta->isa('MooseX::MetaDescription::Meta::Class')) {
+                %desc = (%{ $super->meta->description }, %desc)
+            }
+       }
+       \%desc;
+   },
+);   
 
 no Moose; 1;
 
@@ -17,10 +32,70 @@ __END__
 
 MooseX::MetaDescription::Meta::Class - Custom class metaclass for meta-descriptions
 
+=head1 SYNOPSIS
+
+  package Foo;
+  use metaclass 'MooseX::MetaDescription::Meta::Class' => (
+      description => {
+          'Hello' => 'World',
+      }
+  );
+  use Moose;
+  
+  package Bar;
+  use Moose;
+  
+  extends 'Foo';
+  
+  # always add it *after* the extends
+  __PACKAGE__->meta->description->{'Hello'} = 'Earth';
+  
+  package Baz;
+  use Moose;
+  
+  extends 'Bar';
+  
+  package Gorch;
+  use metaclass 'MooseX::MetaDescription::Meta::Class' => (
+      description => {
+          'Hello' => 'World'
+      }
+  );    
+  use Moose;
+
+  extends 'Baz';  
+
+  # ...
+  
+  Foo->meta->description # { 'Hello' => 'World', 'World' => 'Hello' }
+  Bar->meta->description # { 'Hello' => 'Earth', 'World' => 'Hello' } # change one, inherit the other  
+  Baz->meta->description # { 'Hello' => 'Earth', 'World' => 'Hello' } # inherit both 
+  Gorch->meta->description # { 'Hello' => 'World' } # overrides all, no inheritance   
+
 =head1 DESCRIPTION
 
-Nothing worth saying yet actually, mostly internal usage only. See the 
-SYNPOSIS in L<MooseX::MetaDescription> for an example of usage.
+This module provides the custom metaclass to add Meta Descriptions 
+to your classes. It provides a limited degree of inheritance of 
+meta-descriptions, the details of which are shown above in the 
+SYNOPSIS section.
+
+=head1 METHODS 
+
+NOTE: these are methods composed into this class from 
+L<MooseX::MetaDescription::Meta::Trait> refer to that 
+module for the complete description.
+
+=over 4
+
+=item B<description>
+
+=item B<metadescription_classname>
+
+=item B<metadescription>
+
+=item B<meta>
+
+=back
 
 =head1 BUGS
 

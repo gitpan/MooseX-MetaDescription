@@ -1,7 +1,7 @@
 package MooseX::MetaDescription;
 use Moose;
 
-our $VERSION   = '0.01';
+our $VERSION   = '0.02';
 our $AUTHORITY = 'cpan:STEVAN';
 
 use MooseX::MetaDescription::Meta::Class;
@@ -20,38 +20,40 @@ MooseX::MetaDescription - A framework for adding additional metadata to Moose cl
 
 =head1 SYNOPSIS
 
-    package Foo;
-    use metaclass 'MooseX::MetaDescription::Meta::Class';
-    use Moose;
-    
-    # add class-level metadata
-    __PACKAGE__->meta->description->{'Hello'} = 'World';
-
-    has 'bar' => (
-        metaclass   => 'MooseX::MetaDescription::Meta::Attribute',
-        is          => 'ro',
-        isa         => 'Str',   
-        default     => sub { Bar->new() },
-        # add attribute level metadata
-        description => {
-            node_type   => 'element',
-        }
-    );
-
-    my $foo = Foo->new;
-    
-    $foo->meta->description; # { 'Hello' => 'World' }
-    
-    my $bar = $foo->meta->get_attribute('bar');
-    
-    # access the desciption HASH directly
-    $bar->description; # { node_type   => 'element' }    
-    
-    # or access the instance of MooseX::MetaDescription::Description
-    $bar->metadescription;
-    
-    # access the original attribute metaobject from the metadesc too
-    $bar->metadescription->descriptor == $bar;
+  package Foo;
+  use metaclass 'MooseX::MetaDescription::Meta::Class' => (
+      # add class-level metadata
+      description => {
+          'Hello' => 'World'
+      }
+  );
+  use Moose;
+  
+  has 'bar' => (
+      metaclass   => 'MooseX::MetaDescription::Meta::Attribute',
+      is          => 'ro',
+      isa         => 'Str',   
+      default     => sub { Bar->new() },
+      # add attribute level metadata
+      description => {
+          node_type   => 'element',
+      }
+  );
+  
+  my $foo = Foo->new;
+  
+  $foo->meta->description; # { 'Hello' => 'World' }
+  
+  my $bar = $foo->meta->get_attribute('bar');
+  
+  # access the desciption HASH directly
+  $bar->description; # { node_type   => 'element' }    
+  
+  # or access the instance of MooseX::MetaDescription::Description
+  $bar->metadescription;
+  
+  # access the original attribute metaobject from the metadesc too
+  $bar->metadescription->descriptor == $bar;
 
 =head1 DESCRIPTION
 
@@ -59,6 +61,16 @@ MooseX::MetaDescription allows you to add arbitrary out of band
 metadata to your Moose classes and attributes. This will allow 
 you to track out of band data along with attributes, which is 
 very useful for say serializing Moose classes in HTML or XML.
+
+=head METHODS
+
+=over 4
+
+=item B<meta>
+
+The Moose metaclass.
+
+=back
 
 =head1 BUGS
 

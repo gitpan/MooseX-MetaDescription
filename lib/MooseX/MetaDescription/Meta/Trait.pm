@@ -1,7 +1,7 @@
 package MooseX::MetaDescription::Meta::Trait;
 use Moose::Role;
 
-our $VERSION   = '0.01';
+our $VERSION   = '0.02';
 our $AUTHORITY = 'cpan:STEVAN';
 
 has 'description' => (
@@ -12,12 +12,12 @@ has 'description' => (
 );
 
 has 'metadescription_classname' => (
-    is      => 'ro',
+    is      => 'rw',
     isa     => 'Str', 
     lazy    => 1,  
     default => sub {
         'MooseX::MetaDescription::Description'
-    }  
+    }
 );
 
 has 'metadescription' => (
@@ -29,6 +29,8 @@ has 'metadescription' => (
         
         my $metadesc_class = $self->metadescription_classname;
         my $desc           = $self->description;
+        
+        Class::MOP::load_class($metadesc_class);
         
         if (my $traits = delete $desc->{traits}) {
             my $meta = Moose::Meta::Class->create_anon_class(
@@ -53,10 +55,28 @@ __END__
 
 MooseX::MetaDescription::Meta::Trait - Custom class meta-trait for meta-descriptions
 
+=head1 SYNOPSIS
+
+  package Foo;
+  use Moose;
+  
+  has 'baz' => (
+      # apply this as a trait to your attribute
+      traits      => [ 'MooseX::MetaDescription::Meta::Trait' ],
+      is          => 'ro',
+      isa         => 'Str',   
+      default     => sub { 'Foo::baz' },
+      description => {
+          bar   => 'Foo::baz::bar',
+          gorch => 'Foo::baz::gorch',
+      }
+  );
+
 =head1 DESCRIPTION
 
-Nothing worth saying yet actually, mostly internal usage only. See the 
-SYNPOSIS in L<MooseX::MetaDescription> for an example of usage.
+This is the core of the Meta Description functionality, it is a role that is done
+by both L<MooseX::MetaDescription::Meta::Attribute> and L<MooseX::MetaDescription::Meta::Class>
+and can be used on it's own as a meta-attribute trait.
 
 =head1 METHODS 
 
@@ -64,9 +84,25 @@ SYNPOSIS in L<MooseX::MetaDescription> for an example of usage.
 
 =item B<description>
 
+The description C<HASH> ref is stored here.
+
 =item B<metadescription_classname>
 
+This provides the name of the metadescription class, currently this 
+defaults to L<MooseX::MetaDescription::Description>. It is read only 
+and so can only be specified at instance construction time.
+
 =item B<metadescription>
+
+This is the instance of the class specified in C<metadescription_classname>
+it is generated lazily and is also read-only. In general you will never 
+need to set this yourself, but simply set C<metadescription_classname>
+and it will all just work.
+
+
+=item B<meta>
+
+The L<Moose::Role> metaclass.
 
 =back
 
