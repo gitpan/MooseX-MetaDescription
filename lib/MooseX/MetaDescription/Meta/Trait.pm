@@ -1,7 +1,7 @@
 package MooseX::MetaDescription::Meta::Trait;
 use Moose::Role;
 
-our $VERSION   = '0.02';
+our $VERSION   = '0.03';
 our $AUTHORITY = 'cpan:STEVAN';
 
 has 'description' => (
@@ -35,7 +35,7 @@ has 'metadescription' => (
         if (my $traits = delete $desc->{traits}) {
             my $meta = Moose::Meta::Class->create_anon_class(
                 superclasses => [ $metadesc_class ],
-                roles        => $traits,
+                roles        => $self->prepare_traits_for_application($traits),
             );
             $meta->add_method('meta' => sub { $meta });
             $metadesc_class = $meta->name;
@@ -44,6 +44,9 @@ has 'metadescription' => (
         return $metadesc_class->new(%$desc, descriptor => $self);
     },
 );
+
+# this is for the subclasses to use ...
+sub prepare_traits_for_application { $_[1] }
 
 no Moose::Role; 1;
 
@@ -99,6 +102,12 @@ it is generated lazily and is also read-only. In general you will never
 need to set this yourself, but simply set C<metadescription_classname>
 and it will all just work.
 
+=item B<prepare_traits_for_application ($traits)>
+
+This is passed the ARRAY ref of trait names so that they can be pre-processed
+before they are applied to the metadescription. It is expected to return 
+an ARRAY ref of trait names to be applied. By default it simply returns what 
+it is given.
 
 =item B<meta>
 

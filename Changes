@@ -1,5 +1,12 @@
 Revision history for Perl extension MooseX::MetaDescription
 
+0.03 
+    * MooseX::MetaDescription::Meta::Trait
+      - added the prepare_traits_for_application method
+        to make modifying and pre-processing trait names
+        easier
+        - added tests for this
+
 0.02 Wed. May 7, 2008
     ~~ documentation added for all modules ~~
 
