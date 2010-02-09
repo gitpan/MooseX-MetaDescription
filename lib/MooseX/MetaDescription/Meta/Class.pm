@@ -1,7 +1,7 @@
 package MooseX::MetaDescription::Meta::Class;
 use Moose;
 
-our $VERSION   = '0.02';
+our $VERSION   = '0.04';
 our $AUTHORITY = 'cpan:STEVAN';
 
 extends 'Moose::Meta::Class';

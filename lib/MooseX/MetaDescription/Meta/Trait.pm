@@ -1,20 +1,20 @@
 package MooseX::MetaDescription::Meta::Trait;
 use Moose::Role;
 
-our $VERSION   = '0.03';
+our $VERSION   = '0.04';
 our $AUTHORITY = 'cpan:STEVAN';
 
 has 'description' => (
     is      => 'ro',
     isa     => 'HashRef',
-    lazy    => 1,   
+    lazy    => 1,
     default => sub { +{} },
 );
 
 has 'metadescription_classname' => (
     is      => 'rw',
-    isa     => 'Str', 
-    lazy    => 1,  
+    isa     => 'Str',
+    lazy    => 1,
     default => sub {
         'MooseX::MetaDescription::Description'
     }
@@ -23,15 +23,15 @@ has 'metadescription_classname' => (
 has 'metadescription' => (
     is      => 'ro',
     isa     => 'MooseX::MetaDescription::Description',
-    lazy    => 1,   
+    lazy    => 1,
     default => sub {
         my $self = shift;
-        
+
         my $metadesc_class = $self->metadescription_classname;
         my $desc           = $self->description;
-        
+
         Class::MOP::load_class($metadesc_class);
-        
+
         if (my $traits = delete $desc->{traits}) {
             my $meta = Moose::Meta::Class->create_anon_class(
                 superclasses => [ $metadesc_class ],
@@ -40,7 +40,7 @@ has 'metadescription' => (
             $meta->add_method('meta' => sub { $meta });
             $metadesc_class = $meta->name;
         }
-        
+
         return $metadesc_class->new(%$desc, descriptor => $self);
     },
 );
@@ -62,12 +62,12 @@ MooseX::MetaDescription::Meta::Trait - Custom class meta-trait for meta-descript
 
   package Foo;
   use Moose;
-  
+
   has 'baz' => (
       # apply this as a trait to your attribute
       traits      => [ 'MooseX::MetaDescription::Meta::Trait' ],
       is          => 'ro',
-      isa         => 'Str',   
+      isa         => 'Str',
       default     => sub { 'Foo::baz' },
       description => {
           bar   => 'Foo::baz::bar',
@@ -81,7 +81,7 @@ This is the core of the Meta Description functionality, it is a role that is don
 by both L<MooseX::MetaDescription::Meta::Attribute> and L<MooseX::MetaDescription::Meta::Class>
 and can be used on it's own as a meta-attribute trait.
 
-=head1 METHODS 
+=head1 METHODS
 
 =over 4
 
@@ -91,22 +91,22 @@ The description C<HASH> ref is stored here.
 
 =item B<metadescription_classname>
 
-This provides the name of the metadescription class, currently this 
-defaults to L<MooseX::MetaDescription::Description>. It is read only 
+This provides the name of the metadescription class, currently this
+defaults to L<MooseX::MetaDescription::Description>. It is read only
 and so can only be specified at instance construction time.
 
 =item B<metadescription>
 
 This is the instance of the class specified in C<metadescription_classname>
-it is generated lazily and is also read-only. In general you will never 
+it is generated lazily and is also read-only. In general you will never
 need to set this yourself, but simply set C<metadescription_classname>
 and it will all just work.
 
 =item B<prepare_traits_for_application ($traits)>
 
 This is passed the ARRAY ref of trait names so that they can be pre-processed
-before they are applied to the metadescription. It is expected to return 
-an ARRAY ref of trait names to be applied. By default it simply returns what 
+before they are applied to the metadescription. It is expected to return
+an ARRAY ref of trait names to be applied. By default it simply returns what
 it is given.
 
 =item B<meta>
@@ -117,7 +117,7 @@ The L<Moose::Role> metaclass.
 
 =head1 BUGS
 
-All complex software has bugs lurking in it, and this module is no 
+All complex software has bugs lurking in it, and this module is no
 exception. If you find a bug please either email me, or add the bug
 to cpan-RT.
 

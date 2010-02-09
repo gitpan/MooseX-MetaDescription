@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More no_plan => 1;
+use Test::More 'no_plan';
 use Test::Exception;
 
 BEGIN {
@@ -13,58 +13,59 @@ BEGIN {
 {
     package Foo::Description;
     use Moose;
-    
+
     extends 'MooseX::MetaDescription::Description';
-    
+
     has 'bar'   => (is => 'ro', isa => 'Str');
-    has 'baz'   => (is => 'ro', isa => 'Str');    
-    has 'gorch' => (is => 'ro', isa => 'Str');        
-    
+    has 'baz'   => (is => 'ro', isa => 'Str');
+    has 'gorch' => (is => 'ro', isa => 'Str');
+
     package Foo::MetaDescription::Trait;
     use Moose::Role;
 
     with 'MooseX::MetaDescription::Meta::Trait';
 
-    has '+metadescription_classname' => (
-       default => 'Foo::Description'
+    has 'metadescription_classname' => (
+        default => 'Foo::Description',
+        is => 'ro',
     );
-    
+
     package Foo::MetaDescription::Attribute;
     use Moose;
-    
+
     extends 'MooseX::MetaDescription::Meta::Attribute';
-       with 'Foo::MetaDescription::Trait';
-       
-    has '+metadescription_classname' => (
-       default => 'Foo::Description'
-    );       
+
+    has 'metadescription_classname' => (
+        default => 'Foo::Description',
+        is => 'ro',
+    );
 }
 
 {
     package Foo;
     use Moose;
-    
+
     has 'bar' => (
         metaclass   => 'Foo::MetaDescription::Attribute',
         is          => 'ro',
-        isa         => 'Str',   
+        isa         => 'Str',
         default     => sub { 'Foo::bar' },
         description => {
             baz   => 'Foo::bar::baz',
             gorch => 'Foo::bar::gorch',
         }
     );
-    
+
     has 'baz' => (
         traits      => [ 'Foo::MetaDescription::Trait' ],
         is          => 'ro',
-        isa         => 'Str',   
+        isa         => 'Str',
         default     => sub { 'Foo::baz' },
         description => {
             bar   => 'Foo::baz::bar',
             gorch => 'Foo::baz::gorch',
         }
-    );    
+    );
 }
 
 # check the meta-desc
@@ -91,10 +92,10 @@ foreach my $foo ('Foo', Foo->new) {
         },
         '... got the right class description'
     );
-    
+
     my $bar_meta_desc = $foo->meta->get_attribute('bar')->metadescription;
     is($bar_meta_desc->baz,   'Foo::bar::baz',   '... we have methods');
-    is($bar_meta_desc->gorch, 'Foo::bar::gorch', '... we have methods');    
+    is($bar_meta_desc->gorch, 'Foo::bar::gorch', '... we have methods');
 
     is_deeply(
         $foo->meta->get_attribute('baz')->description,
@@ -104,9 +105,9 @@ foreach my $foo ('Foo', Foo->new) {
         },
         '... got the right class description'
     );
-    
+
     my $baz_meta_desc = $foo->meta->get_attribute('baz')->metadescription;
     is($baz_meta_desc->bar,   'Foo::baz::bar',   '... we have methods');
-    is($baz_meta_desc->gorch, 'Foo::baz::gorch', '... we have methods');    
+    is($baz_meta_desc->gorch, 'Foo::baz::gorch', '... we have methods');
 }
 

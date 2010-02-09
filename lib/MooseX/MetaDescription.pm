@@ -1,7 +1,7 @@
 package MooseX::MetaDescription;
 use Moose;
 
-our $VERSION   = '0.03';
+our $VERSION   = '0.04';
 our $AUTHORITY = 'cpan:STEVAN';
 
 use MooseX::MetaDescription::Meta::Class;
@@ -62,7 +62,7 @@ metadata to your Moose classes and attributes. This will allow
 you to track out of band data along with attributes, which is 
 very useful for say serializing Moose classes in HTML or XML.
 
-=head METHODS
+=head1 METHODS
 
 =over 4
 
