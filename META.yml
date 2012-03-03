@@ -3,12 +3,14 @@ abstract: 'A framework for adding additional metadata to Moose classes'
 author:
   - 'Code and Design originally by Jonathan Rockway in the Ernst module, '
 build_requires:
-  ExtUtils::MakeMaker: 6.42
+  ExtUtils::MakeMaker: 6.36
+  Test::Exception: 0
   Test::More: 0.62
 configure_requires:
-  ExtUtils::MakeMaker: 6.42
+  ExtUtils::MakeMaker: 6.36
 distribution_type: module
-generated_by: 'Module::Install version 0.910'
+dynamic_config: 1
+generated_by: 'Module::Install version 1.05'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -22,4 +24,4 @@ requires:
   Moose: 0.4
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.04
+version: 0.05

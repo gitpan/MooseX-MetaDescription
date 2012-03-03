@@ -1,9 +1,12 @@
 Revision history for Perl extension MooseX::MetaDescription
 
+0.05 Sat. Mar 3, 2012
+    * Fix undeclared dependency on Test::Excpetion. RT#75491
+
 0.04 Tue. Feb 8, 2010
     * Fix tests to work without undocumented features which
       aren't present in the latest refactor of attributes in roles
-      in Moose 0.91 (RT#54159).
+      in Moose 0.94 (RT#54159).
 
 0.03
     * MooseX::MetaDescription::Meta::Trait

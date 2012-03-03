@@ -1,7 +1,7 @@
 package MooseX::MetaDescription::Meta::Trait;
 use Moose::Role;
 
-our $VERSION   = '0.04';
+our $VERSION   = '0.05';
 our $AUTHORITY = 'cpan:STEVAN';
 
 has 'description' => (

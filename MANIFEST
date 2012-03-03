@@ -15,7 +15,7 @@ lib/MooseX/MetaDescription/Meta/Attribute.pm
 lib/MooseX/MetaDescription/Meta/Class.pm
 lib/MooseX/MetaDescription/Meta/Trait.pm
 Makefile.PL
-MANIFEST
+MANIFEST			This list of files
 META.yml
 README
 t-author/pod.t
