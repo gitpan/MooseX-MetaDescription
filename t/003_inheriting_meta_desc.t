@@ -66,7 +66,7 @@ is($baz_attr->metadescription->descriptor, $baz_attr, '... got the circular ref'
     isa_ok($baz_attr->metadescription, 'MooseX::MetaDescription::Description');
     is($baz_attr->metadescription->descriptor, $baz_attr, '... got the circular ref');
 
-    my ($bar_attr_2, $baz_attr_2) = Bar->meta->get_all_attributes;
+    my ($bar_attr_2, $baz_attr_2) = sort { $a->name cmp $b->name } Bar->meta->get_all_attributes;
     is($bar_attr, $bar_attr_2, '... got the same attribute');
     is($baz_attr, $baz_attr_2, '... got the same attribute');
 }

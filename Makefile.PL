@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use inc::Module::Install;
+use inc::Module::Install 0.67;
 use Module::Install::AuthorRequires;
 use Module::Install::AuthorTests;
 
@@ -12,8 +12,8 @@ license 'perl';
 requires 'Moose' => 0.40;
 
 # things the tests need
-build_requires 'Test::More' => '0.62';
-build_requires 'Test::Exception';
+test_requires 'Test::More' => '0.62';
+test_requires 'Test::Exception';
 
 author_requires 'Test::Pod' => '1.14';
 author_requires 'Test::Pod::Coverage';

@@ -1,5 +1,9 @@
 Revision history for Perl extension MooseX::MetaDescription
 
+0.06 Tue. Dec 11, 2012
+    * Fix tests to work regardless of order of get_all_attributes
+      return value (RT#81713)
+
 0.05 Sat. Mar 3, 2012
     * Fix undeclared dependency on Test::Excpetion. RT#75491
 
